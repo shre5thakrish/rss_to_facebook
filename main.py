@@ -3,11 +3,8 @@ import feedparser
 from facebook import GraphAPI
 
 # Debug: Print environment variables safely
-print("FB_PAGE_ID:", os.getenv('615481804977173'))
-print("FB_ACCESS_TOKEN:", "[EAAHs4IJ1IwcBO0uBjvIZBxBzLNaC0N9BZBXPvPEIrPxIaDCbqR3pqYyh5fQNl6UilrjSJ7Gi5IXBJzGSljsrwn05GgKxESbyGpYAKzpgOnfyU42ZAxJyGUpJZBxqLvGrZCbt2vtNUzI9dMUZAWbXpiV6LWIgFaZAIkdDZC16Knj3YyjXuAP8H1f209EwYFhzZCXcCVZBaJxLWZCgYVQvnz10poZBHkLucKtHEOR4gZAMEmdHS
-
-
-]")  # Do not print the actual token for security reasons
+print("FB_PAGE_ID:", os.getenv('FB_PAGE_ID'))
+print("FB_ACCESS_TOKEN:", "[REDACTED]")   # Do not print the actual token for security reasons
 
 # Facebook setup
 FB_PAGE_ID = os.getenv('615481804977173')

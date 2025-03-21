@@ -4,7 +4,7 @@ from facebook import GraphAPI
 
 # Debug: Print environment variables safely
 print("FB_PAGE_ID:", os.getenv('FB_PAGE_ID'))
-print("FB_ACCESS_TOKEN:", "[REDACTED]")   # Do not print the actual token for security reasons
+print("FB_ACCESS_TOKEN is set:", bool(os.getenv('FB_ACCESS_TOKEN')))   # Do not print the actual token for security reasons
 
 # Facebook setup
 FB_PAGE_ID = os.getenv('615481804977173')

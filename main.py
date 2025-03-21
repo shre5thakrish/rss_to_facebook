@@ -18,36 +18,45 @@ RSS_FEEDS = [
    'https://rss.dw.com/rdf/rss-en-world'
 ]
 
+
 def get_new_entries(last_run_entries):
     new_entries = []
     for feed_url in RSS_FEEDS:
         feed = feedparser.parse(feed_url)
         for entry in feed.entries:
-            # Use link as fallback ID if no entry.id exists
-            entry_id = entry.get('id', entry.link)
+            # Safely handle entries with missing fields
+            entry_id = entry.get('id', entry.get('link', ''))
+            title = entry.get('title', 'No Title')
+            link = entry.get('link', '')
+            description = entry.get('description', '')
+            
             if entry_id not in last_run_entries:
+                # Process content safely
+                content = (description[:500] + '...') if description else ""
                 new_entries.append({
                     'id': entry_id,
-                    'title': entry.title,
-                    'link': entry.link,
-                    'content': entry.description[:500] + '...' if entry.description else ""
+                    'title': title,
+                    'link': link,
+                    'content': content
                 })
     return new_entries
 
 def post_to_facebook(message, link):
     try:
-        graph.put_object(
-            parent_object=FB_PAGE_ID,
-            connection_name='feed',
-            message=message,
-            link=link
-        )
-        print(f"Posted: {message}")
+        if link:  # Only post if link exists
+            graph.put_object(
+                parent_object=FB_PAGE_ID,
+                connection_name='feed',
+                message=message,
+                link=link
+            )
+            print(f"Posted: {message}")
+        else:
+            print("Skipped post - Missing link")
     except Exception as e:
-        print(f"Error posting: {str(e)}")
+        print(f"Facebook API Error: {str(e)}")
 
 if __name__ == "__main__":
-    # Track posted entries
     last_run_entries = set()
     
     try:
@@ -60,6 +69,9 @@ if __name__ == "__main__":
     
     with open('posted_entries.txt', 'a') as f:
         for entry in new_entries:
-            post_text = f"📢 {entry['title']}\n\n{entry['content']}"
+            post_text = f"📢 {entry['title']}"
+            if entry['content']:
+                post_text += f"\n\n{entry['content']}"
+                
             post_to_facebook(post_text, entry['link'])
             f.write(f"{entry['id']}\n")

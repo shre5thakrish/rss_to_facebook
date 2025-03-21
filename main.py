@@ -2,13 +2,28 @@ import os
 import feedparser
 from facebook import GraphAPI
 
+# Debug: Print environment variables
+print("FB_PAGE_ID:", os.getenv('FB_PAGE_ID'))
+print("FB_ACCESS_TOKEN:", os.getenv('FB_ACCESS_TOKEN'))
+
 # Facebook setup
 FB_PAGE_ID = os.getenv('615481804977173')
-FB_ACCESS_TOKEN = os.getenv('EAAHs4IJ1IwcBO0uBjvIZBxBzLNaC0N9BZBXPvPEIrPxIaDCbqR3pqYyh5fQNl6UilrjSJ7Gi5IXBJzGSljsrwn05GgKxESbyGpYAKzpgOnfyU42ZAxJyGUpJZBxqLvGrZCbt2vtNUzI9dMUZAWbXpiV6LWIgFaZAIkdDZC16Knj3YyjXuAP8H1f209EwYFhzZCXcCVZBaJxLWZCgYVQvnz10poZBHkLucKtHEOR4gZAMEmdHS')
-graph = GraphAPI(FB_ACCESS_TOKEN)
+FB_ACCESS_TOKEN = os.getenv('EAAHs4IJ1IwcBO0uBjvIZBxBzLNaC0N9BZBXPvPEIrPxIaDCbqR3pqYyh5fQNl6UilrjSJ7Gi5IXBJzGSljsrwn05GgKxESbyGpYAKzpgOnfyU42ZAxJyGUpJZBxqLvGrZCbt2vtNUzI9dMUZAWbXpiV6LWIgFaZAIkdDZC16Knj3YyjXuAP8H1f209EwYFhzZCXcCVZBaJxLWZCgYVQvnz10poZBHkLucKtHEOR4gZAMEmdHS
 
+')
+
+if not FB_PAGE_ID or not FB_ACCESS_TOKEN:
+    raise ValueError("Missing Facebook credentials. Check GitHub Secrets.")
+
+# Debug: Print the token and page ID
+print("Using Page ID:", FB_PAGE_ID)
+print("Using Access Token:", FB_ACCESS_TOKEN)
+
+graph = GraphAPI(access_token=FB_ACCESS_TOKEN, version="3.0")
+
+# RSS feeds (customize as needed)
 RSS_FEEDS = [
-     'http://feeds.bbci.co.uk/news/world/rss.xml',
+      'http://feeds.bbci.co.uk/news/world/rss.xml',
     'http://rss.cnn.com/rss/edition_world.rss',
     'https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best',
     'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
@@ -18,20 +33,17 @@ RSS_FEEDS = [
    'https://rss.dw.com/rdf/rss-en-world'
 ]
 
-
 def get_new_entries(last_run_entries):
     new_entries = []
     for feed_url in RSS_FEEDS:
         feed = feedparser.parse(feed_url)
         for entry in feed.entries:
-            # Safely handle entries with missing fields
             entry_id = entry.get('id', entry.get('link', ''))
             title = entry.get('title', 'No Title')
             link = entry.get('link', '')
             description = entry.get('description', '')
             
             if entry_id not in last_run_entries:
-                # Process content safely
                 content = (description[:500] + '...') if description else ""
                 new_entries.append({
                     'id': entry_id,
@@ -43,7 +55,7 @@ def get_new_entries(last_run_entries):
 
 def post_to_facebook(message, link):
     try:
-        if link:  # Only post if link exists
+        if link:
             graph.put_object(
                 parent_object=FB_PAGE_ID,
                 connection_name='feed',

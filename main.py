@@ -3,12 +3,8 @@ import feedparser
 from facebook import GraphAPI
 
 # Debug: Print environment variables
-print("FB_PAGE_ID:", os.getenv('FB_PAGE_ID'))
-print("FB_ACCESS_TOKEN:", os.getenv('FB_ACCESS_TOKEN'))
-
-# Facebook setup
-FB_PAGE_ID = os.getenv('615481804977173')
-FB_ACCESS_TOKEN = os.getenv('EAAHs4IJ1IwcBO0uBjvIZBxBzLNaC0N9BZBXPvPEIrPxIaDCbqR3pqYyh5fQNl6UilrjSJ7Gi5IXBJzGSljsrwn05GgKxESbyGpYAKzpgOnfyU42ZAxJyGUpJZBxqLvGrZCbt2vtNUzI9dMUZAWbXpiV6LWIgFaZAIkdDZC16Knj3YyjXuAP8H1f209EwYFhzZCXcCVZBaJxLWZCgYVQvnz10poZBHkLucKtHEOR4gZAMEmdHS
+print("FB_PAGE_ID:", os.getenv('615481804977173')
+print("FB_ACCESS_TOKEN:", os.getenv('EAAHs4IJ1IwcBO0uBjvIZBxBzLNaC0N9BZBXPvPEIrPxIaDCbqR3pqYyh5fQNl6UilrjSJ7Gi5IXBJzGSljsrwn05GgKxESbyGpYAKzpgOnfyU42ZAxJyGUpJZBxqLvGrZCbt2vtNUzI9dMUZAWbXpiV6LWIgFaZAIkdDZC16Knj3YyjXuAP8H1f209EwYFhzZCXcCVZBaJxLWZCgYVQvnz10poZBHkLucKtHEOR4gZAMEmdHS
 
 ')
 
